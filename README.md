@@ -34,6 +34,9 @@ The assignment handout is the source of truth for detailed settings and question
 
 ## Working locally
 
+**New to Git or pull requests?** Read the [group Git guide](CONTRIBUTING.md)
+for setup, the branch-and-PR workflow, merging, conflict resolution, and common fixes.
+
 Keep the ns-3 installation separate from this repository when practical. Edit and
 run assignment simulations in its `scratch/` directory as required by the handout,
 then copy the final source files back here before committing. Keep the provided
@@ -68,17 +71,8 @@ q3.cc
 One group member submits through Canvas. GitHub is for version control; pushing
 to GitHub does not submit the assignment.
 
-## First commit and push
+## Joining the repository
 
-After reviewing the repository, run these commands yourself:
-
-```bash
-git add README.md .gitignore wifi6610.cc
-git commit -m "Set up PA1 repository"
-git branch -M main
-git push -u origin main
-```
-
-The `origin` remote is configured as
+Clone the existing repository and create a branch for your work using the
+[group Git guide](CONTRIBUTING.md). The repository URL is
 `https://github.gatech.edu/yzhang3841/wireless_network_pas.git`.
-If the remote already has commits, reconcile its history before pushing.
