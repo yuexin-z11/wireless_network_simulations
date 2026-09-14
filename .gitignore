@@ -1,0 +1,30 @@
+# ns-3/CMake build products
+build/
+cmake-cache/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+compile_commands.json
+*.o
+*.a
+*.so
+
+# Generated simulation captures and logs (retain locally for analysis)
+*.pcap
+*.pcapng
+*.tr
+*.log
+
+# Generated submission archives
+*.zip
+
+# Editor and OS temporary files
+*~
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+
+# Keep assignment sources, report sources, figures, and PA1.pdf tracked.
