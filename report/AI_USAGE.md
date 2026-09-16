@@ -20,7 +20,15 @@ Known prompts from the repository documentation work:
 Pending: Add earlier planning/setup prompts and later code, analysis, or report
 prompts used by any group member. Include the tool/model if required by the handout.
 
+- Asked Codex to create separate Q1, Q2, and Q3 working files and prepare them for
+  GitHub, leaving the actual push to the user. Files were copied from the tutorial
+  and supplied WiFi starter, with comments identifying unfinished assignment work.
+
 ## Ideas the AI provided correctly with minimal guidance
+
+- Created separate `q1.cc`, `wifi6610.cc`, and `q3.cc` starter copies. All three
+  compiled under ns-3.47, and the repository and scratch copies matched. This
+  was a build check only; assignment configurations and measurements are pending.
 
 - Created an Ubuntu package list and setup script for ns-3.47, Wireshark, and
   tshark. On Ubuntu 26.04, the configured ns-3 modules and examples compiled,
