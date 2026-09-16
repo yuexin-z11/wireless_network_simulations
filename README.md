@@ -17,14 +17,16 @@ MPDU aggregation, and RTS/CTS using **ns-3.47** and **Wireshark**.
 5. Write answers in the [report source](report/PA1.md), record [AI usage](report/AI_USAGE.md),
    and open a PR for a teammate to review.
 
-The repository currently contains the provided WiFi starter and collaboration
-templates. The Q1 and Q3 implementations, measurements, and final PDF are pending.
+The repository contains the provided WiFi reference, working starter copies, and
+collaboration templates. Assignment-specific Q1 and Q3 changes, measurements, and
+the final PDF are pending. The working copies are not completed solutions.
 
 ## Repository contents
 
 | File | Purpose | Status |
 | --- | --- | --- |
 | `wifi6610-v2.cc` | Updated WiFi starter code for Q2 and Q3 (`HtMcs4`) | Included |
+| `wifi6610.cc` | Q2 working copy of the WiFi starter | Starter only |
 | [requirements-ubuntu.txt](requirements-ubuntu.txt) | Ubuntu packages for the assignment environment | Ready |
 | [scripts/setup-ns3.sh](scripts/setup-ns3.sh) | One-command ns-3.47 and Wireshark setup | Ready |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Beginner Git, PR, merge, and conflict instructions | Ready |
@@ -34,8 +36,8 @@ templates. The Q1 and Q3 implementations, measurements, and final PDF are pendin
 | [report/PA1.md](report/PA1.md) | Editable source for numbered answers | Outline |
 | [report/AI_USAGE.md](report/AI_USAGE.md) | AI usage notes to append to the report | Template |
 | [.github/pull_request_template.md](.github/pull_request_template.md) | Checklist for new PRs | Ready |
-| `q1.cc` | Two-node PPP/UDP echo simulation | To create |
-| `q3.cc` | Two-STA WiFi simulation with hidden terminals | To create |
+| `q1.cc` | Q1 working copy of `first.cc`; tutorial defaults remain | Starter only |
+| `q3.cc` | Q3 working copy of WiFi starter; still one STA | Starter only |
 | `PA1.pdf` | Numbered answers, measurements, and AI usage summary | To create |
 
 ## Assignment checklist
@@ -154,15 +156,26 @@ Work through Q1, then Q2, then Q3. Place working C++ source files under
 `~/ns-3.47/scratch/`, but run every `./ns3` command from `~/ns-3.47`, never from
 `scratch/`. Before creating a file, inspect `scratch/` and preserve existing work.
 
-- **Q1:** Copy `examples/tutorial/first.cc` to `scratch/q1.cc`, configure it using
+From the Git repository directory, copy the supplied working files into ns-3:
+
+```bash
+cp -i q1.cc wifi6610.cc q3.cc ~/ns-3.47/scratch/
+cd ~/ns-3.47
+./ns3 build q1 wifi6610 q3 -j 4
+```
+
+If prompted to overwrite a file, keep any newer work you already have in `scratch/`.
+The setup script itself does not copy these assignment files.
+
+- **Q1:** The supplied `q1.cc` is copied from `examples/tutorial/first.cc`; configure it using
   the assignment, then build with `./ns3 build q1` and run with `./ns3 run q1`.
-- **Q2:** Copy the repository's `wifi6610-v2.cc` to `scratch/wifi6610.cc`.
+- **Q2:** The supplied `wifi6610.cc` is a working copy of `wifi6610-v2.cc`.
   Use `./ns3 run 'wifi6610 --phyRate=HtMcs4 --simulationTime=3'` for the required
   runtime. Add `--pcap=1` inside the quotes when captures are needed.
-- **Q3:** Create `scratch/q3.cc` from the WiFi starter and implement the two-STA
+- **Q3:** Start from the supplied `scratch/q3.cc` and implement the two-STA
   configuration. Build with `./ns3 build q3`, then run with 10 seconds of activity.
 
-The copy step renames the Q2 working file so its ns-3 target is `wifi6610`.
+The Q2 working file is named `wifi6610.cc`, so its ns-3 target is `wifi6610`.
 Keep `wifi6610-v2.cc` unchanged as the reference. There is no required `q2.cc`
 deliverable. Save measurements in `results/` and copy the finished `q1.cc` and
 `q3.cc` back to the Git repository before committing them.
