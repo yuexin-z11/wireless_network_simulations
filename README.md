@@ -1,279 +1,200 @@
-# ECE 6610: Wireless Networks — Programming Assignment 1
+# Wireless Network Simulations
 
-Experiments with point-to-point networking, TCP over WiFi, hidden terminals,
-MPDU aggregation, and RTS/CTS using **ns-3.47** and **Wireshark**.
+Reproducible C++ experiments with **ns-3.47** and Wireshark: wired UDP echo,
+802.11n TCP throughput, and the effect of distance on wireless delivery.
+Two-station hidden-terminal and RTS/CTS experiments are planned.
 
-**Due:** September 23, 2026, 11:59 PM ET  
-**Names:** Pending — add all group members before submission.
+## Results and status
 
-**Group name:** Pending — agree on a name with the group.
+- **WiFi baseline:** 31.9758 Mbit/s received throughput at 10 m, with 100 Mbps
+  application offered load, HtMcs4, and 3 seconds of activity.
+- **Distance sweep:** 76 runs from 5 to 380 m in 5 m steps. The last positive
+  throughput was 0.274773 Mbit/s at 375 m; the first zero was at 380 m.
+- **Remaining:** beacon/frame analysis, verification of the updated wired capture,
+  and the two-station aggregation/RTS experiments.
 
-## Start here
+These results describe the recorded simulator settings and seed, not a universal
+WiFi range. See [the report](REPORT.md) and [raw measurement records](experiments.csv).
 
-1. Clone the repository using the [Git and pull request guide](CONTRIBUTING.md).
-2. Install ns-3.47 and Wireshark using the one-command Ubuntu setup below.
-3. Claim a task in the [team tracker](docs/TEAM.md) and create a task branch.
-4. Save experiment settings and measurements in [results](results/README.md).
-5. Write answers in the [report source](report/PA1.md), record [AI usage](report/AI_USAGE.md),
-   and open a PR for a teammate to review.
+## Files
 
-The repository contains the provided WiFi reference, working starter copies, and
-collaboration templates. Assignment-specific Q1 and Q3 changes, measurements, and
-the final PDF are pending. The working copies are not completed solutions.
+| File | Purpose |
+| --- | --- |
+| `q1.cc` | Two-node wired UDP echo simulation with PCAP tracing |
+| `wifi6610.cc` | Single-STA WiFi TCP simulation with a configurable distance |
+| `q3.cc` | Starter for two-STA experiments; currently still one STA |
+| [REPORT.md](REPORT.md) | Experiment explanations, full distance table, and AI disclosure |
+| [experiments.csv](experiments.csv) | 77 recorded runs with commands, settings, and source provenance |
+| [setup-ns3.sh](setup-ns3.sh) | Ubuntu setup and tutorial verification |
+| [requirements-ubuntu.txt](requirements-ubuntu.txt) | Ubuntu package dependencies |
 
-## Repository contents
+The simulations originated in ECE 6610 coursework. Original source filenames and
+report question numbers are retained for traceability. Source copyright notices
+are preserved.
 
-| File | Purpose | Status |
-| --- | --- | --- |
-| `wifi6610-v2.cc` | Updated WiFi starter code for Q2 and Q3 (`HtMcs4`) | Included |
-| `wifi6610.cc` | Q2 working copy of the WiFi starter | Starter only |
-| [requirements-ubuntu.txt](requirements-ubuntu.txt) | Ubuntu packages for the assignment environment | Ready |
-| [scripts/setup-ns3.sh](scripts/setup-ns3.sh) | One-command ns-3.47 and Wireshark setup | Ready |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | Beginner Git, PR, merge, and conflict instructions | Ready |
-| [docs/TEAM.md](docs/TEAM.md) | Task ownership and group coordination | Template |
-| [results/README.md](results/README.md) | Experiment recording instructions | Ready |
-| [results/experiments.csv](results/experiments.csv) | Shared experiment index | Empty template |
-| [report/PA1.md](report/PA1.md) | Editable source for numbered answers | Outline |
-| [report/AI_USAGE.md](report/AI_USAGE.md) | AI usage notes to append to the report | Template |
-| [.github/pull_request_template.md](.github/pull_request_template.md) | Checklist for new PRs | Ready |
-| `q1.cc` | Q1 working copy of `first.cc`; tutorial defaults remain | Starter only |
-| `q3.cc` | Q3 working copy of WiFi starter; still one STA | Starter only |
-| `PA1.pdf` | Numbered answers, measurements, and AI usage summary | To create |
+## Set up Ubuntu
 
-## Assignment checklist
-
-- [ ] Set up ns-3.47 and Wireshark.
-- [ ] Q1: Copy `examples/tutorial/first.cc` to ns-3's `scratch/q1.cc`, configure the assigned link and applications, and capture both nodes.
-- [ ] Q1: Answer Q1-1 through Q1-4 using simulation output and packet captures.
-- [ ] Q2: Use `wifi6610-v2.cc` with `phyRate=HtMcs4` and `simulationTime=3` (stop at 4 seconds); measure throughput and sweep distance in 5-meter steps.
-- [ ] Q2: Capture a run with STA and AP within 5 meters and answer Q2-1 through Q2-4.
-- [ ] Q3: Add a second transmitting STA and compare aggregation settings at positions -10 and +10 meters from the AP.
-- [ ] Q3: Choose hidden-terminal positions using the Q2 range measurement, keeping both STAs within AP range.
-- [ ] Q3: Compare all four aggregation/RTS combinations with 10 seconds of network activity and answer Q3-1 through Q3-5.
-- [ ] Save the hidden-terminal simulation as `q3.cc`.
-- [ ] Complete `PA1.pdf` with names, group name, and all numbered answers.
-- [ ] Package `PA1.pdf`, `q1.cc`, and `q3.cc` into one ZIP for Canvas.
-
-The assignment handout is the source of truth for detailed settings and questions.
-It is not included in this checkout; verify this checklist and the due date against
-the course handout before starting.
-
-## One-command Ubuntu setup
-
-### 1. Prepare Ubuntu and get the repository
-
-Use an Ubuntu terminal, including Ubuntu on WSL2 if working on Windows. Run these
-commands inside Ubuntu, not PowerShell. You need a regular Linux account with
-sudo access, an internet connection, and several GB of free disk space. The setup
-has been checked on Ubuntu 26.04. A graphical desktop or WSLg is needed to open
-Wireshark windows; terminal capture analysis works without a GUI.
-
-Check your current account:
+Ubuntu must already be installed, directly or through WSL2 on Windows. Use an
+Ubuntu terminal and a regular Linux user with sudo access, not root. You need
+internet access and several GB of free space. The setup was verified on Ubuntu
+26.04. If Git is missing, install it with `sudo apt-get install git` after
+`sudo apt-get update`, then clone the repository:
 
 ```bash
-whoami
+git clone https://github.com/yuexin-z11/wireless_network.git
+cd wireless_network
+bash setup-ns3.sh
 ```
 
-If this prints `root`, switch to your regular Ubuntu account before continuing.
-Do not run the setup script or `./ns3` with `sudo`.
+For an existing checkout, open its directory and run `bash setup-ns3.sh`.
+The script installs the listed Ubuntu packages, including Wireshark and tshark,
+then downloads, builds, and checks ns-3.47 in `~/ns-3.47`. Do not use `pip` for
+this requirements file. The script requests sudo only for installing packages.
+The build takes several minutes and ends by running the unmodified `first`
+tutorial; that output verifies the environment rather than measuring these experiments.
 
-Make sure you can access the group's repository while signed in to Georgia Tech
-GitHub. If Git is not installed, install it first:
+An existing extracted ns-3.47 installation is reused, preserving source and
+`scratch/` files while updating its build configuration. A downloaded archive
+alone is not detected. For another installation path or fewer build jobs:
 
 ```bash
-sudo apt-get update
-sudo apt-get install -y git
+NS3_DIR="$HOME/ns-3.47" NS3_JOBS=2 bash setup-ns3.sh
 ```
 
-For a new checkout:
+Use an absolute `NS3_DIR` and substitute it in the commands below if different.
+A different version at the destination is rejected. Do not run simultaneous builds
+against one installation. Build logs are saved inside the ns-3 directory.
+The setup runs a tutorial check, not the full ns-3 test suite.
 
-```bash
-cd ~
-git clone https://github.gatech.edu/yzhang3841/wireless_network_pas.git
-cd wireless_network_pas
-```
+## Copy and run the working files
 
-If you already cloned the repository, open that folder instead. Until the setup
-changes are merged into `main`, they are on branch `docs/git-guide`; after the
-author pushes them, a fresh clone can access them with `git switch docs/git-guide`.
-See [CONTRIBUTING.md](CONTRIBUTING.md) for authentication and branch instructions.
-
-### 2. Install the requirements and build ns-3
-
-From the repository directory, run:
-
-```bash
-bash scripts/setup-ns3.sh
-```
-
-The script installs the packages in [requirements-ubuntu.txt](requirements-ubuntu.txt),
-downloads the official **ns-3.47** release to `~/ns-3.47`, builds the assignment's
-wired and WiFi modules and their dependencies, and runs the unmodified `first`
-tutorial to verify the installation. It asks for your sudo password only if system
-packages need installing. Internet access and several minutes for the initial
-build are required. This requirements file is for Ubuntu packages, not `pip`.
-The procedure follows the [official installation guide](https://www.nsnam.org/docs/release/3.47/installation/singlehtml/index.html).
-
-An existing ns-3.47 installation is reused without replacing its sources or
-`scratch/` files; its build configuration is updated for this assignment. A different
-installation at the destination is rejected. Build and tutorial output are saved
-as `installation-build.log` and `installation-first.log` inside the ns-3 directory.
-Tests are disabled; the tutorial run is a smoke check, not the full ns-3 test suite.
-Do not run multiple setup/build processes against the same installation at once.
-
-For a different location or a smaller build parallelism, use:
-
-```bash
-NS3_DIR="$HOME/ns-3.47" NS3_JOBS=2 bash scripts/setup-ns3.sh
-```
-
-If you use a custom `NS3_DIR`, substitute that path for `~/ns-3.47` in the remaining
-instructions. For WSL, keeping the installation under your Linux home directory
-also keeps generated build files separate from the Git checkout.
-
-### 3. Verify the environment
-
-Run from the ns-3 root:
-
-```bash
-cd ~/ns-3.47
-cat VERSION
-./ns3 run first
-tshark --version
-```
-
-`VERSION` should show `3.47`. The unmodified tutorial should print a client send,
-server receive/reply, and client receive. Its default addresses, port, and timing
-are tutorial settings, not the required Q1 configuration or Q1 results.
-
-The setup does not create `q1.cc` or `q3.cc` or generate assignment measurements.
-Wireshark's graphical interface needs a desktop or WSLg; `tshark` can inspect saved
-PCAPs in a terminal. No live network capture permissions are needed for ns-3 PCAPs.
-
-### 4. Prepare assignment work after setup
-
-Work through Q1, then Q2, then Q3. Place working C++ source files under
-`~/ns-3.47/scratch/`, but run every `./ns3` command from `~/ns-3.47`, never from
-`scratch/`. Before creating a file, inspect `scratch/` and preserve existing work.
-
-From the Git repository directory, copy the supplied working files into ns-3:
+From the Git repository directory:
 
 ```bash
 cp -i q1.cc wifi6610.cc q3.cc ~/ns-3.47/scratch/
 cd ~/ns-3.47
+cat VERSION
 ./ns3 build q1 wifi6610 q3 -j 4
+./ns3 run q1
 ```
 
-If prompted to overwrite a file, keep any newer work you already have in `scratch/`.
-The setup script itself does not copy these assignment files.
+If prompted to overwrite, preserve any newer work in `scratch/`. Always run
+`./ns3` from the ns-3 root, never from `scratch/`, and never with sudo.
+Git pull only updates the repository; it does not sync `scratch/` automatically.
 
-- **Q1:** The supplied `q1.cc` is copied from `examples/tutorial/first.cc`; configure it using
-  the assignment, then build with `./ns3 build q1` and run with `./ns3 run q1`.
-- **Q2:** The supplied `wifi6610.cc` is a working copy of `wifi6610-v2.cc`.
-  Use `./ns3 run 'wifi6610 --phyRate=HtMcs4 --simulationTime=3'` for the required
-  runtime. Add `--pcap=1` inside the quotes when captures are needed.
-- **Q3:** Start from the supplied `scratch/q3.cc` and implement the two-STA
-  configuration. Build with `./ns3 build q3`, then run with 10 seconds of activity.
-
-The Q2 working file is named `wifi6610.cc`, so its ns-3 target is `wifi6610`.
-Keep `wifi6610-v2.cc` unchanged as the reference. There is no required `q2.cc`
-deliverable. Save measurements in `results/` and copy the finished `q1.cc` and
-`q3.cc` back to the Git repository before committing them.
-
-For generated captures, use Wireshark's **File → Open** to select the `.pcap`
-file in the ns-3 directory. For a terminal-only Q1 inspection, after generating
-the capture, run:
+Q1 currently writes captures into `scratch/`. Open `scratch/q1-0-0.pcap` in
+Wireshark for the client's timestamps, or inspect it from the ns-3 root:
 
 ```bash
-cd ~/ns-3.47
-tshark -r q1-0-0.pcap -Y 'udp.port == 6610'
+tshark -r scratch/q1-0-0.pcap -Y 'udp.port == 6610'
 ```
 
-### Setup troubleshooting
+Wireshark needs an Ubuntu desktop or WSLg for its window. Use File → Open for
+saved captures; live capture permissions are unnecessary. Terminal-only users
+can use tshark.
 
-- **Missing script:** Check that you are in the repository directory and have the
-  branch containing the setup files.
-- **Root-user error:** Use your regular Ubuntu account; the script requests sudo
-  only for package installation.
-- **Download or apt error:** Check internet access and the actual error, resolve
-  it, then rerun the same setup command.
-- **Compiler killed or insufficient memory:** Close other memory-heavy programs
-  and rerun with `NS3_JOBS=2 bash scripts/setup-ns3.sh` from the repository.
-- **Destination already contains a different installation:** Choose another
-  absolute `NS3_DIR`; do not delete an existing project to make room.
-- **Wireshark cannot open a window:** Use an Ubuntu desktop/WSLg session or use
-  `tshark` to inspect the saved captures.
+For the WiFi baseline, run from the ns-3 root:
 
-## Working locally
-
-**New to Git or pull requests?** Read the [group Git guide](CONTRIBUTING.md)
-for setup, the branch-and-PR workflow, merging, conflict resolution, and common fixes.
-
-Keep the ns-3 installation separate from this repository when practical. Edit and
-run assignment simulations in its `scratch/` directory as required by the handout,
-then copy the final source files back here before committing. Keep the provided
-`wifi6610-v2.cc` as a reference.
-
-Record run settings and measured throughput as you work. Small result tables,
-report sources, and figures may be committed alongside the final PDF. Generated
-packet captures, build products, and submission ZIPs are ignored by default;
-keep captures locally for Wireshark analysis.
-
-### Reproducible experiments
-
-Record the source commit, exact run command, tool version, topology, relevant
-settings, and measurement interval for each experiment. Use one row per run in
-[the experiment index](results/experiments.csv), with detailed notes or tables
-beside it. Keep units explicit and distinguish per-station from total throughput.
-
-The starter exposes `payloadSize`, `dataRate`, `tcpVariant`, `phyRate`,
-`simulationTime`, and `pcap` as command-line options. Its aggregation, RTS, and
-frequency settings are currently source variables, not command-line options.
-Record any source edits used for a run so another teammate can reproduce it.
-
-### Team workflow
-
-Use one branch and PR per task. Update [task ownership](docs/TEAM.md) when taking
-work, and request a teammate's review before merging. Coordinate edits to shared
-report sections. Edit the Markdown sources first and have one person export the
-final PDF after the answers are merged; see the [report instructions](report/PA1.md).
-
-## AI usage summary
-
-Append a separate summary to `PA1.pdf` using these exact headings:
-
-- Prompts used
-- Ideas the AI provided correctly with minimal guidance
-- Ideas the AI provided that were incorrect or misleading
-
-Include the assignment-planning and repository-setup interactions if used, and
-update the summary as work continues.
-Use [report/AI_USAGE.md](report/AI_USAGE.md) to collect these notes during the project.
-
-## Submission
-
-Submit one ZIP containing:
-
-```text
-PA1.pdf
-q1.cc
-q3.cc
+```bash
+./ns3 run 'wifi6610 --phyRate=HtMcs4 --simulationTime=3 --distance=10'
 ```
 
-One group member submits through Canvas. GitHub is for version control; pushing
-to GitHub does not submit the assignment.
+This gives 3 seconds of activity, stopping at 4 seconds. Change `--distance` to
+repeat the experiment at another distance. To reproduce the sweep, use 5, 10, 15,
+... meters and record the final `Average throughput:` value, stopping at the first
+zero. Add `--pcap=1` to enable WiFi captures. The intermediate output covers 100 ms
+intervals, not the final average.
 
-Before creating the ZIP:
+`q3.cc` must first be adapted for two transmitting STAs before running the planned
+10-second hidden-terminal experiments. It is currently only a one-STA starter.
 
-- Finish every numbered answer and replace all pending fields in the report.
-- Add the group name, every member's name, and the separate AI usage summary.
-- Export the report to `PA1.pdf` at the repository root and inspect every page.
-- Verify the final `q1.cc` and `q3.cc` run in the required ns-3 environment.
-- Check that the ZIP contains the three required files and opens correctly.
-- Have the designated submitter upload it and confirm the Canvas submission receipt.
+## Record and share work
 
-## Joining the repository
+Record each run in `experiments.csv`: source commit, exact command, ns-3 version,
+topology, traffic/PHY settings, aggregation/RTS settings, seed if relevant,
+measurement interval, value, units, and local PCAP reference. Distinguish aggregate
+and per-station throughput. Leave missing values blank; do not invent results.
+Write analysis and AI disclosure in `REPORT.md`.
 
-Clone the existing repository and create a branch for your work using the
-[group Git guide](CONTRIBUTING.md). The repository URL is
-`https://github.gatech.edu/yzhang3841/wireless_network_pas.git`.
+After editing files in `scratch/`, copy the changed sources back to this repository
+before committing. From the repository, copy back the changed sources:
+
+```bash
+cp -i ~/ns-3.47/scratch/q1.cc ~/ns-3.47/scratch/q3.cc .
+```
+
+Copy back `wifi6610.cc` too if you changed it. Check `git status` and `git diff`,
+then stage only your intended files and commit. Use a task branch and open a PR
+for teammate review. The user runs the final push command; Codex does not push.
+The original supplied `wifi6610-v2.cc` remains available in Git history.
+
+## Branches and merging
+
+A branch keeps your task separate from `main`. A pull request (PR) asks the group
+to review and merge that branch. When `main` is protected, changes must follow
+the required PR approvals and checks. Do not bypass branch protection.
+
+1. **Start a task.** With a clean working tree (`git status`), update `main` and
+   create a branch. Replace `yourname/q1` with your name and task:
+
+   ```bash
+   git switch main
+   git pull --ff-only origin main
+   git switch -c yourname/q1
+   ```
+
+   If you already have uncommitted work, preserve it on a task branch before
+   switching to `main`; do not discard it to follow these steps.
+
+2. **Save and share.** Review your edits, stage only the intended files, and commit.
+   This example assumes you changed `q1.cc`; substitute your actual files:
+
+   ```bash
+   git diff
+   git add q1.cc
+   git diff --cached
+   git commit -m "Update Q1 simulation"
+   git push -u origin yourname/q1
+   ```
+
+   Run the push yourself. Codex prepares local changes and leaves pushing to you.
+   A push uploads your branch; it does not merge it into `main`.
+
+3. **Open a PR on GitHub.** Choose `main` as the base and your task branch as the
+   compare branch. Describe the changes and checks, then request a teammate's
+   review. Address comments and satisfy the required approvals and checks shown
+   on the PR. Push follow-up commits to the same branch to update the PR.
+
+4. **Resolve conflicts if needed.** With your task branch checked out and local
+   edits committed, run `git fetch origin`, then `git merge origin/main`. Edit
+   conflicting files to keep the intended combined result and remove conflict
+   markers. Stage the resolved files, run `git commit`, check the code, and push
+   your branch again. Do not force-push or bypass branch protection.
+
+5. **Merge and update.** Once GitHub allows merging, use the PR's merge button
+   with a merge method permitted by the repository. Then update your local copy:
+
+   ```bash
+   git switch main
+   git pull --ff-only origin main
+   ```
+
+   Create a fresh task branch for the next change. Updating the repository does
+   not update the separate ns-3 `scratch/` copies.
+
+## Troubleshooting
+
+- **Root error:** Switch to your regular Ubuntu account; do not use sudo for ns-3.
+- **Missing setup script:** Run from the repository directory with the latest files.
+- **Download/package error:** Resolve the reported network or apt error and rerun setup.
+- **Compiler killed:** Free memory and retry with `NS3_JOBS=2 bash setup-ns3.sh`.
+- **Wrong existing version:** Select a different `NS3_DIR` without deleting your work.
+- **No Wireshark window:** Use a graphical Ubuntu/WSLg session or tshark.
+
+## Outputs
+
+Keep generated PCAPs, logs, build files, and archives local; `.gitignore` excludes
+them. Commit reproducible commands, source changes, and measured tables. Raw log
+paths in `experiments.csv` refer to the machine that ran the experiments; rerun the
+recorded commands to produce local logs on another machine. The report includes
+unfinished sections so planned work remains distinguishable from measured results.

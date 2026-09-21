@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run from any directory: bash /path/to/PA1/scripts/setup-ns3.sh
+# Run from any directory: bash /path/to/wireless_network/setup-ns3.sh
 set -euo pipefail
 
 if (( EUID == 0 )); then
@@ -40,7 +40,7 @@ packages=()
 while IFS= read -r package || [[ -n $package ]]; do
     [[ -z $package || $package == \#* ]] && continue
     packages+=("$package")
-done < "$script_dir/../requirements-ubuntu.txt"
+done < "$script_dir/requirements-ubuntu.txt"
 
 missing=()
 for package in "${packages[@]}"; do
@@ -82,6 +82,6 @@ echo "Building ns-3 $ns3_version in $ns3_dir using $jobs jobs."
 ./ns3 run first 2>&1 | tee installation-first.log
 
 printf '\nSetup complete: %s\n' "$ns3_dir"
-printf 'Verified the unmodified first tutorial; these are not Q1 results.\n'
-printf 'For assignment work, put sources in scratch/ and run ./ns3 from this root.\n'
+printf 'Verified the unmodified first tutorial; these are not experiment results.\n'
+printf 'For project work, put sources in scratch/ and run ./ns3 from this root.\n'
 printf 'Wireshark and tshark are installed for PCAP inspection.\n'
