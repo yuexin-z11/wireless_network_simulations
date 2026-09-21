@@ -1,4 +1,4 @@
-# Ubuntu apt packages used by scripts/setup-ns3.sh (not a pip requirements file).
+# Ubuntu apt packages used by setup-ns3.sh (not a pip requirements file).
 build-essential
 cmake
 ninja-build
