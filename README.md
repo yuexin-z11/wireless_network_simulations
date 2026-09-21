@@ -10,7 +10,8 @@ Two-station hidden-terminal and RTS/CTS experiments are planned.
   application offered load, HtMcs4, and 3 seconds of activity.
 - **Distance sweep:** 76 runs from 5 to 380 m in 5 m steps. The last positive
   throughput was 0.274773 Mbit/s at 375 m; the first zero was at 380 m.
-- **Remaining:** beacon/frame analysis, verification of the updated wired capture,
+- **Beacon interval:** 102.4 ms, confirmed from the first second of a 5 m PCAP.
+- **Remaining:** first-STA-frame analysis, verification of the updated wired capture,
   and the two-station aggregation/RTS experiments.
 
 These results describe the recorded simulator settings and seed, not a universal
@@ -24,7 +25,7 @@ WiFi range. See [the report](REPORT.md) and [raw measurement records](experiment
 | `wifi6610.cc` | Single-STA WiFi TCP simulation with a configurable distance |
 | `q3.cc` | Starter for two-STA experiments; currently still one STA |
 | [REPORT.md](REPORT.md) | Experiment explanations, full distance table, and AI disclosure |
-| [experiments.csv](experiments.csv) | 77 recorded runs with commands, settings, and source provenance |
+| [experiments.csv](experiments.csv) | 78 experiment records with commands, settings, and source provenance |
 | [setup-ns3.sh](setup-ns3.sh) | Ubuntu setup and tutorial verification |
 | [requirements-ubuntu.txt](requirements-ubuntu.txt) | Ubuntu package dependencies |
 

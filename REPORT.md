@@ -168,7 +168,43 @@ All 76 runs are recorded in `experiments.csv`. Raw outputs remain locally in
 
 ### Q2-3
 
-Pending.
+**Measured beacon interval: 102.4 ms (0.1024 s).** With the AP at (0,0,0) m and
+STA at (5,0,0) m, PCAP tracing was enabled using the existing `--pcap=1` option:
+
+```bash
+./ns3 run "wifi6610 --phyRate=HtMcs4 --simulationTime=3 --distance=5 --pcap=1"
+```
+
+In the AP capture, only beacons in the first simulation second were inspected.
+Their fixed-parameter Beacon Interval field was **100 TU**, which Wireshark
+explicitly decoded as **0.102400 seconds** (1 TU = 1024 microseconds). All nine
+consecutive timestamp differences were also exactly **0.102400 s**.
+
+| Frame | Simulation timestamp (s) |
+| --- | --- |
+| 1 | 0.005860000 |
+| 2 | 0.108260000 |
+| 9 | 0.210660000 |
+| 10 | 0.313060000 |
+| 11 | 0.415460000 |
+| 12 | 0.517860000 |
+| 13 | 0.620260000 |
+| 14 | 0.722660000 |
+| 15 | 0.825060000 |
+| 16 | 0.927460000 |
+
+Wireshark/tshark display filter:
+
+```text
+wlan.fc.type_subtype == 0x08 && frame.time_epoch < 1
+```
+
+These ns-3 captures use simulation time as their epoch timestamps, so this filter
+selects the first second rather than one second after the first captured frame.
+The source address of all ten beacons was the AP, `00:00:00:00:00:01`.
+Evidence is saved locally in `/home/yuexin/ns-3.47/q2-3-captures/`, including the
+AP and STA captures, run log, and first-second beacon table. The beacon interval
+is read from the capture, not assumed from a simulator default.
 
 ### Q2-4
 
@@ -202,65 +238,28 @@ Pending.
 
 ## Prompts used
 
-- Asked Codex to organize the repository as a general network simulation project
-  and prepare it for the personal GitHub repository, retaining experiment provenance
-  and AI disclosure.
+Selected prompts (summarized):
 
-- Asked Codex to complete Q2-2 by running the distance sweep in 5 m increments
-  and recording the actual results and transmission-range estimate.
-
-- Asked Codex to run Q2-1 and record the actual final throughput and explanation.
-
-- Asked Codex to simplify the repository, consolidate the report and AI notes,
-  and remove redundant templates and duplicate files.
-
-Known prompts from the repository documentation work:
-
-- "add a instruction page for the people dont know how to do prs or new to git since this will be a group project. they need to know how to merge and resolve problems"
-- "do i push now?"
-- "now i did that but prepare the rest of the readme file and everything for me to push"
-- Asked Codex to inspect the PA1 starter and local ns-3 environment, then install ns-3.47 on Ubuntu.
-- "can you add what commants to run to a requirement file so that everything can be installed for others running one command to get the environment set up?"
-- Asked Codex to expand the README with environment prerequisites, installation,
-  verification, and assignment file setup instructions, then prepare a local Git
-  commit while leaving the push command for the user.
-
-Pending: Add earlier planning/setup prompts and later code, analysis, or report
-prompts used by any group member. Include the tool/model if required by the handout.
-
-- Asked Codex to create separate Q1, Q2, and Q3 working files and prepare them for
-  GitHub, leaving the actual push to the user. Files were copied from the tutorial
-  and supplied WiFi starter, with comments identifying unfinished assignment work.
+- “Help me install ns-3.47 and Wireshark on Ubuntu.”
+- “Review my Q1 code against the assignment requirements.”
+- “Explain why application data rate and measured throughput differ.”
+- “Add comments explaining the code changes.”
+- “Help organize the repository and draft explanations of the results.”
 
 ## Ideas the AI provided correctly with minimal guidance
 
-- Added a distance command-line option without changing the 10 m default, compiled
-  the source, and ran 76 distance cases. Confirmed the 10 m result matched Q2-1
-  and recorded the first zero at 380 m with the last positive result at 375 m.
+I also used Codex to add explanatory comments to the code, identifying the
+modified sections and explaining their purpose.
 
-- Ran the supplied WiFi simulation with HtMcs4 and three seconds of activity;
-  recorded the final throughput directly from the saved output and kept the
-  protocol-overhead explanation separate from measured results.
-
-- Created separate `q1.cc`, `wifi6610.cc`, and `q3.cc` starter copies. All three
-  compiled under ns-3.47, and the repository and scratch copies matched. This
-  was a build check only; assignment configurations and measurements are pending.
-
-- Created an Ubuntu package list and setup script for ns-3.47, Wireshark, and
-  tshark. On Ubuntu 26.04, the configured ns-3 modules and examples compiled,
-  the unmodified `first` tutorial completed a UDP echo exchange, and rerunning
-  the setup script against the installation succeeded. These checks verify the
-  environment only; the tutorial output is not PA1 measurement data.
-
-Pending: Review the generated Git guide, repository documentation, and templates
-and record what the group verified to be correct. Add later verified contributions
-and explain how they were checked.
+The AI helped prepare the setup script and working source copies, reviewed Q1
+settings, and added the Q2 distance option and explanatory comments. It ran the
+Q2 baseline and 5 m distance sweep, recorded actual simulation output, and used
+PCAP fields and timestamps to determine the beacon interval. It also helped
+explain offered data rate versus measured throughput and organize the report.
+The recorded numerical results came from simulation runs and packet captures.
 
 ## Ideas the AI provided that were incorrect or misleading
 
-The earlier README incorrectly said to set Q2's `simulationTime` to 4 seconds.
-Using the supplied assignment instructions, this was corrected to 3 seconds of
-activity, with the simulation stopping at 4 seconds.
-
-Pending: Record errors, misleading suggestions, and corrections found during
-review or experiments. If none are found after review, state that explicitly.
+An earlier AI-generated README incorrectly specified `simulationTime=4` for Q2.
+This was corrected to `simulationTime=3`: traffic starts at 1 second and the
+simulation stops at 4 seconds.
