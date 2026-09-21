@@ -79,7 +79,7 @@ main(int argc, char* argv[])
     std::string phyRate = "HtMcs4";        /* Physical layer bitrate -- Determines maximum possible physical layer rate */
     // Q2-2 modification: configurable distance; keep the original 10 m default.
     double distance = 10.0;               /* STA-to-AP distance in meters. */
-    double simulationTime = 10;            /* Simulation time in seconds. */
+    double simulationTime = 3;            /* Simulation time in seconds. */
     bool pcapTracing = false;              /* PCAP Tracing is enabled or not. */
     bool enableLargeAmpdu = true;                /* Enable/disable A-MPDU */
     bool enableRts = false;               /* Enable/disable CTS/RTS */
