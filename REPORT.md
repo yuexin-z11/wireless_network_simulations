@@ -243,13 +243,10 @@ Selected prompts (summarized):
 - “Help me install ns-3.47 and Wireshark on Ubuntu.”
 - “Review my Q1 code against the assignment requirements.”
 - “Explain why application data rate and measured throughput differ.”
-- “Add comments explaining the code changes.”
+- “Add comments to existing codes.”
 - “Help organize the repository and draft explanations of the results.”
 
 ## Ideas the AI provided correctly with minimal guidance
-
-I also used Codex to add explanatory comments to the code, identifying the
-modified sections and explaining their purpose.
 
 The AI helped prepare the setup script and working source copies, reviewed Q1
 settings, and added the Q2 distance option and explanatory comments. It ran the
