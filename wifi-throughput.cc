@@ -1,4 +1,4 @@
-// PA1 Q3 starter: still one STA; two-STA and hidden-terminal changes are pending.
+// TCP throughput over 802.11n; use --distance to vary STA-to-AP separation.
 /*
  * Copyright (c) 2015, IMDEA Networks Institute
  *
@@ -77,7 +77,9 @@ main(int argc, char* argv[])
     std::string dataRate = "100Mbps";      /* Application layer datarate. */
     std::string tcpVariant = "TcpNewReno"; /* TCP variant type. */
     std::string phyRate = "HtMcs4";        /* Physical layer bitrate -- Determines maximum possible physical layer rate */
-    double simulationTime = 10;            /* Simulation time in seconds. */
+    // Distance sweep: configurable distance; keep the original 10 m default.
+    double distance = 10.0;               /* STA-to-AP distance in meters. */
+    double simulationTime = 3;            /* Simulation time in seconds. */
     bool pcapTracing = false;              /* PCAP Tracing is enabled or not. */
     bool enableLargeAmpdu = true;                /* Enable/disable A-MPDU */
     bool enableRts = false;               /* Enable/disable CTS/RTS */
@@ -94,6 +96,8 @@ main(int argc, char* argv[])
                  tcpVariant);
     cmd.AddValue("phyRate", "Physical layer bitrate", phyRate);
     cmd.AddValue("simulationTime", "Simulation time in seconds", simulationTime);
+    // Distance sweep: --distance=5, 10, 15, ... allows the 5 m sweep without recompiling.
+    cmd.AddValue("distance", "STA-to-AP distance in meters", distance);
     cmd.AddValue("pcap", "Enable/disable PCAP Tracing", pcapTracing);
     cmd.Parse(argc, argv);
 
@@ -190,7 +194,8 @@ main(int argc, char* argv[])
     MobilityHelper mobility;
     Ptr<ListPositionAllocator> positionAlloc = CreateObject<ListPositionAllocator>();
     positionAlloc->Add(Vector(0.0, 0.0, 0.0));      // AP position
-    positionAlloc->Add(Vector(10.0, 0.0, 0.0));     // STA position - pay attention to distance calculation. Change just one coordinate for simple calculation
+    // Distance sweep: replace fixed x=10 m with the requested distance; AP stays at (0,0,0).
+    positionAlloc->Add(Vector(distance, 0.0, 0.0)); // STA position; AP remains at the origin
 
     mobility.SetPositionAllocator(positionAlloc);
     mobility.SetMobilityModel("ns3::ConstantPositionMobilityModel");
@@ -234,8 +239,8 @@ main(int argc, char* argv[])
     if (pcapTracing)
     {
         wifiPhy.SetPcapDataLinkType(WifiPhyHelper::DLT_IEEE802_11_RADIO);
-        wifiPhy.EnablePcap("module2-AccessPoint", apDevice);
-        wifiPhy.EnablePcap("module2-Station", staDevices);
+        wifiPhy.EnablePcap("wifi-ap", apDevice);
+        wifiPhy.EnablePcap("wifi-sta", staDevices);
     }
 
     /* Start Simulation */

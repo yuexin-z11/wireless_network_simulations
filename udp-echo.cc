@@ -18,7 +18,7 @@
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE("FirstScriptExample");
+NS_LOG_COMPONENT_DEFINE("WiredUdpEcho");
 
 int
 main(int argc, char* argv[])
@@ -63,7 +63,7 @@ main(int argc, char* argv[])
     clientApps.Start(Seconds(2));
     clientApps.Stop(Seconds(10));
 
-    pointToPoint.EnablePcapAll("scratch/q1");
+    pointToPoint.EnablePcapAll("udp-echo");
 
     Simulator::Run();
     Simulator::Destroy();
