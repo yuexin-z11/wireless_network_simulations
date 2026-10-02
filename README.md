@@ -10,6 +10,7 @@ provide packet-level inspection of generated PCAPs.
 | --- | --- |
 | `udp-echo.cc` | Two-node wired UDP echo simulation with PCAP tracing |
 | `wifi-throughput.cc` | WiFi TCP simulation with configurable distance, data rate, and duration |
+| `tools/capture_inspect.py` | Reusable beacon and IP/Ethernet capture summaries in JSON |
 | [experiments.csv](experiments.csv) | 78 measured records with settings and source provenance |
 | [setup-ns3.sh](setup-ns3.sh) | Ubuntu dependency installation and ns-3.47 build |
 | [requirements-ubuntu.txt](requirements-ubuntu.txt) | Ubuntu packages used by setup |
@@ -102,6 +103,25 @@ The AP and STA captures use the `wifi-ap` and `wifi-sta` prefixes. Open them wit
 Wireshark's File → Open, or use tshark without a graphical desktop. No live-capture
 permissions are required. ns-3 epoch timestamps represent simulation time, so the
 filter above selects beacons before simulation time 1 second.
+
+### Inspect packet captures
+
+The capture inspector uses the installed `tshark` executable and the standard library
+from Python 3.10 or newer. It reads a capture and prints JSON without modifying it.
+
+```bash
+python3 tools/capture_inspect.py beacons wifi-ap-0-0.pcap
+python3 tools/capture_inspect.py beacons wifi-ap-0-0.pcap --ssid your-network-name
+python3 tools/capture_inspect.py ip-dest path/to/ethernet-capture.pcapng 192.0.2.10
+```
+
+`beacons` groups frames by decoded SSID and transmitter MAC. It reports the first
+matching frame, frame count, primary channel, frequency, beacon interval in TU and
+milliseconds, sample radio PHY code and data rate, and the maximum legacy rate in
+each supported-rates element. Radio values describe the first matching frame;
+`null` means a field was absent from the capture. `ip-dest` accepts an IPv4
+destination and counts its source IP and Ethernet MAC combinations. An Ethernet
+source is `null` when the capture does not contain an Ethernet header.
 
 ## Recorded results
 
