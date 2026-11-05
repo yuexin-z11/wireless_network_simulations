@@ -1,8 +1,8 @@
 # Wireless Network Simulations
 
 C++ experiments using **ns-3.47** to study UDP echo latency, TCP throughput over
-802.11n, wireless transmission range, and beacon timing. Wireshark and tshark
-provide packet-level inspection of generated PCAPs.
+802.11n and a wired path, wireless transmission range, and beacon timing.
+Wireshark and tshark provide packet-level inspection of generated PCAPs.
 
 ## Contents
 
@@ -12,6 +12,10 @@ provide packet-level inspection of generated PCAPs.
 | `wifi-throughput.cc` | WiFi TCP simulation with configurable distance, data rate, and duration |
 | `tools/capture_inspect.py` | Reusable beacon and IP/Ethernet capture summaries in JSON |
 | [experiments.csv](experiments.csv) | 78 measured records with settings and source provenance |
+| [docs/tcp-propagation.md](docs/tcp-propagation.md) | TCP throughput analysis across wired delays |
+| [data/tcp-propagation.csv](data/tcp-propagation.csv) | Eight packet-sink throughput measurements |
+| [figures/tcp-propagation.svg](figures/tcp-propagation.svg) | Throughput and propagation delay plot |
+| `tools/plot_tcp_propagation.py` | Rebuild the plot from the CSV using Python's standard library |
 | [setup-ns3.sh](setup-ns3.sh) | Ubuntu dependency installation and ns-3.47 build |
 | [requirements-ubuntu.txt](requirements-ubuntu.txt) | Ubuntu packages used by setup |
 
@@ -144,10 +148,21 @@ overhead, channel access, acknowledgments, and TCP behavior limit useful deliver
 The range is specific to this model, seed, and short measurement window, not a
 universal WiFi range. Wired measurements are not included in this result table.
 
-Measurements were collected before the source files and capture prefixes were
-renamed. CSV commands use the current executable names; source commits and hashes
-refer to the code used for the original runs. Packet captures and logs remain on
-the measurement machine and are not bundled; rerun commands to generate your own.
+The WiFi measurements were collected before the source files and capture prefixes
+were renamed. CSV commands use the current executable names; source commits and
+hashes refer to the code used for the original runs. Packet captures and logs
+remain on the measurement machine and are not bundled; rerun commands to
+generate your own.
+
+### TCP throughput and wired delay
+
+A separate three-node ns-3.47 experiment measured an 802.11n TCP sender through
+a wired router-to-server link. At 30 ms one-way wired delay, sink throughput
+was 9.26536 Mbps on a 10 Mbps link and 16.5488 Mbps on a 100 Mbps link. Holding
+the wired rate at 100 Mbps while reducing delay to 1 ms raised throughput to
+49.511 Mbps. The curve approaches a throughput ceiling at short delays. See
+the [method, plot, and full data](docs/tcp-propagation.md); these runs used a
+different Wi-Fi mode from the distance experiment above.
 
 ## Contributing
 
@@ -170,6 +185,8 @@ Resolve conflicts on that branch, then merge the PR and update local `main`.
 ## Attribution
 
 The simulations adapt ns-3 examples and supplied WiFi code; source copyright and
-license notices are retained. AI assistance supported setup, code comments, the
-distance option, simulation execution, packet analysis, and documentation. Numerical
-results were recorded from actual simulation output and captures.
+license notices are retained. The TCP propagation measurements used an externally
+supplied topology source retained outside this repository. AI assistance supported
+setup, code comments, the distance option, simulation execution, packet analysis,
+plot generation, and documentation. Numerical results were recorded from actual
+simulation output and captures.

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 570" role="img" aria-labelledby="plot-title plot-description">
+<title id="plot-title">TCP throughput versus wired propagation delay</title>
+<desc id="plot-description">Seven measurements at a 100 Mbps wired link; throughput falls from 49.511 Mbps at 1 ms to 16.5488 Mbps at 30 ms. A 10 Mbps baseline at 30 ms reaches 9.26536 Mbps.</desc>
+<rect width="980" height="570" fill="white"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="490" y="47" text-anchor="middle" font-size="24" fill="#253344">TCP throughput versus wired propagation delay</text>
+<text x="490" y="74" text-anchor="middle" font-size="15" fill="#526071">100 Mbps wired link, with a 10 Mbps baseline</text>
+<line x1="100" y1="444.0" x2="900" y2="444.0" stroke="#d9e1e8"/>
+<text x="84" y="450.0" text-anchor="end" font-size="16" fill="#253344">0</text>
+<line x1="100" y1="383.6" x2="900" y2="383.6" stroke="#d9e1e8"/>
+<text x="84" y="389.6" text-anchor="end" font-size="16" fill="#253344">10</text>
+<line x1="100" y1="323.3" x2="900" y2="323.3" stroke="#d9e1e8"/>
+<text x="84" y="329.3" text-anchor="end" font-size="16" fill="#253344">20</text>
+<line x1="100" y1="262.9" x2="900" y2="262.9" stroke="#d9e1e8"/>
+<text x="84" y="268.9" text-anchor="end" font-size="16" fill="#253344">30</text>
+<line x1="100" y1="202.5" x2="900" y2="202.5" stroke="#d9e1e8"/>
+<text x="84" y="208.5" text-anchor="end" font-size="16" fill="#253344">40</text>
+<line x1="100" y1="142.2" x2="900" y2="142.2" stroke="#d9e1e8"/>
+<text x="84" y="148.2" text-anchor="end" font-size="16" fill="#253344">50</text>
+<line x1="126.7" y1="112" x2="126.7" y2="444" stroke="#edf1f5"/>
+<text x="126.7" y="472" text-anchor="middle" font-size="16" fill="#253344">1</text>
+<line x1="233.3" y1="112" x2="233.3" y2="444" stroke="#edf1f5"/>
+<text x="233.3" y="472" text-anchor="middle" font-size="16" fill="#253344">5</text>
+<line x1="366.7" y1="112" x2="366.7" y2="444" stroke="#edf1f5"/>
+<text x="366.7" y="472" text-anchor="middle" font-size="16" fill="#253344">10</text>
+<line x1="500.0" y1="112" x2="500.0" y2="444" stroke="#edf1f5"/>
+<text x="500.0" y="472" text-anchor="middle" font-size="16" fill="#253344">15</text>
+<line x1="633.3" y1="112" x2="633.3" y2="444" stroke="#edf1f5"/>
+<text x="633.3" y="472" text-anchor="middle" font-size="16" fill="#253344">20</text>
+<line x1="766.7" y1="112" x2="766.7" y2="444" stroke="#edf1f5"/>
+<text x="766.7" y="472" text-anchor="middle" font-size="16" fill="#253344">25</text>
+<line x1="900.0" y1="112" x2="900.0" y2="444" stroke="#edf1f5"/>
+<text x="900.0" y="472" text-anchor="middle" font-size="16" fill="#253344">30</text>
+<line x1="100" y1="444" x2="900" y2="444" stroke="#253344" stroke-width="2"/>
+<line x1="100" y1="112" x2="100" y2="444" stroke="#253344" stroke-width="2"/>
+<polyline points="126.7,145.1 233.3,151.7 366.7,187.6 500.0,250.2 633.3,294.2 766.7,324.9 900.0,344.1" fill="none" stroke="#1768a8" stroke-width="4" stroke-linejoin="round"/>
+<circle cx="126.7" cy="145.1" r="6" fill="#1768a8"/>
+<circle cx="233.3" cy="151.7" r="6" fill="#1768a8"/>
+<circle cx="366.7" cy="187.6" r="6" fill="#1768a8"/>
+<circle cx="500.0" cy="250.2" r="6" fill="#1768a8"/>
+<circle cx="633.3" cy="294.2" r="6" fill="#1768a8"/>
+<circle cx="766.7" cy="324.9" r="6" fill="#1768a8"/>
+<circle cx="900.0" cy="344.1" r="6" fill="#1768a8"/>
+<circle cx="900.0" cy="388.1" r="7" fill="#d97732"/>
+<line x1="610" y1="126" x2="645" y2="126" stroke="#1768a8" stroke-width="4"/>
+<text x="655" y="132" text-anchor="start" font-size="15" fill="#253344">100 Mbps</text>
+<circle cx="628" cy="154" r="7" fill="#d97732"/>
+<text x="655" y="160" text-anchor="start" font-size="15" fill="#253344">10 Mbps baseline</text>
+<text x="500" y="509" text-anchor="middle" font-size="18" fill="#253344">Wired one-way propagation delay (ms)</text>
+<text x="31" y="278" transform="rotate(-90 31 278)" text-anchor="middle" font-size="18" fill="#253344">Sink average throughput (Mbps)</text>
+<text x="500" y="543" text-anchor="middle" font-size="14" fill="#526071">Propagation-only RTT = 2 × one-way delay</text>
+</g></svg>
